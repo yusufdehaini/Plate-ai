@@ -12,6 +12,36 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+// ── Email (Resend) ────────────────────────────────────
+const { Resend } = require('resend');
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const FROM_EMAIL = process.env.FROM_EMAIL || 'Plate AI <hello@theplateai.com>';
+
+// Sends the welcome email. Fire-and-forget: a failure here never breaks signup.
+function sendWelcomeEmail(email) {
+  if (!resend) return; // not configured yet — skip silently
+  resend.emails.send({
+    from: FROM_EMAIL,
+    to: email,
+    subject: "You're on the list! 🍽️",
+    html: `
+      <div style="font-family: Arial, Helvetica, sans-serif; max-width: 480px; margin: 0 auto; padding: 36px 28px; color: #1A1A1A; line-height: 1.6;">
+        <h1 style="font-size: 26px; margin: 0 0 16px; letter-spacing: -0.5px;">You're on the list! 🍽️</h1>
+        <p style="font-size: 15px; color: #444; margin: 0 0 16px;">
+          Thanks for joining the <strong>Plate&nbsp;AI</strong> waitlist. We'll email you the moment we launch —
+          you'll be among the very first to turn any fridge into a 5-star meal.
+        </p>
+        <p style="font-size: 15px; color: #444; margin: 0 0 24px;">
+          As an early supporter, you've locked in <strong style="color:#E07A5F;">30% off Pro</strong> at launch. 🎉
+        </p>
+        <p style="font-size: 14px; color: #888; margin: 0;">— The Plate AI team</p>
+      </div>
+    `
+  })
+    .then(() => console.log('📧 Welcome email sent to', email))
+    .catch(e => console.error('Email send failed:', e.message || e));
+}
+
 // Create table if it doesn't exist
 async function initDB() {
   await pool.query(`
@@ -39,10 +69,9 @@ app.post('/api/waitlist', async (req, res) => {
   }
 
   try {
-    await pool.query(
-      'INSERT INTO waitlist (email) VALUES ($1)',
-      [email.toLowerCase().trim()]
-    );
+    const cleanEmail = email.toLowerCase().trim();
+    await pool.query('INSERT INTO waitlist (email) VALUES ($1)', [cleanEmail]);
+    sendWelcomeEmail(cleanEmail);
     return res.status(201).json({ message: 'Successfully joined the waitlist!' });
   } catch (err) {
     if (err.code === '23505') {
