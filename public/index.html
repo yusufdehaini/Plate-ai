@@ -237,7 +237,7 @@
     .section-divider { height: 1px; margin: 0 7%; background: linear-gradient(to right, transparent, rgba(76,130,251,0.15), transparent); }
 
     /* ── MARQUEE ─────────────────────────────────────── */
-    .marquee { overflow: hidden; padding: 22px 0; border-top: 1px solid var(--border-dim); border-bottom: 1px solid var(--border-dim); background: var(--bg2); position: relative; z-index: 1; }
+    .marquee { overflow: hidden; padding: 22px 0; border-top: 1px solid var(--border-dim); border-bottom: 1px solid var(--border-dim); background: transparent; position: relative; z-index: 1; }
     .marquee-track { display: inline-flex; white-space: nowrap; transform: skewX(0deg); transition: transform 0.2s ease-out; will-change: transform; }
     .marquee-track.row { animation: marquee 28s linear infinite; }
     @keyframes marquee { to { transform: translateX(-50%); } }
@@ -245,14 +245,15 @@
     .marquee-item .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); -webkit-text-stroke: 0; box-shadow: 0 0 12px var(--blue); }
 
     /* ── HOW IT WORKS ────────────────────────────────── */
-    .how { background: var(--bg2); text-align: center; overflow: hidden; }
+    .how { background: transparent; text-align: center; overflow: hidden; }
     .how .section-sub { margin: 0 auto 64px; }
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; max-width: 900px; margin: 0 auto; position: relative; }
     .steps::before { content: ''; position: absolute; top: 28px; left: calc(16.67% + 28px); right: calc(16.67% + 28px); height: 1px; background: linear-gradient(90deg, var(--blue) 0%, rgba(76,130,251,0.3) 50%, var(--blue) 100%); pointer-events: none; }
     .step { display: flex; flex-direction: column; align-items: center; padding: 0 36px; }
     .step-num { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--blue-dark), var(--blue)); color: #fff; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; position: relative; z-index: 2; box-shadow: 0 0 0 8px rgba(76,130,251,0.1), 0 8px 24px rgba(76,130,251,0.35); transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
     .step:hover .step-num { transform: scale(1.12) translateY(-2px); box-shadow: 0 0 0 12px rgba(76,130,251,0.12), 0 12px 32px rgba(76,130,251,0.5); }
-    .step-icon { font-size: 2.2rem; margin-bottom: 16px; }
+    .step-icon { margin-bottom: 16px; color: var(--blue); line-height: 0; }
+    .step-icon svg { width: 34px; height: 34px; }
     .step-title { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
     .step-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.65; }
 
@@ -272,6 +273,13 @@
     .feature-card:hover .feature-icon-wrap { background: rgba(76,130,251,0.18); box-shadow: 0 0 24px rgba(76,130,251,0.25); }
     .feature-title { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
     .feature-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.65; }
+
+    /* ── EXTRA FEATURES (reviews slot) ───────────────── */
+    .extra-features { background: transparent; text-align: center; overflow: hidden; }
+    .extra-features .section-sub { margin: 0 auto 48px; }
+    .extra-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; max-width: 800px; margin: 0 auto; text-align: left; }
+    .extra-grid .feature-card { background: linear-gradient(140deg, color-mix(in srgb, var(--blue) 16%, var(--bg3)) 0%, var(--bg3) 70%); border-color: color-mix(in srgb, var(--blue) 28%, transparent); }
+    .extra-grid .feature-card:hover { border-color: color-mix(in srgb, var(--blue) 50%, transparent); box-shadow: 0 22px 55px rgba(0,0,0,0.28), 0 0 40px color-mix(in srgb, var(--blue) 14%, transparent); }
 
     /* Pinned horizontal mode (added by JS on desktop w/ GSAP) */
     .features.pinned { min-height: 100dvh; display: flex; align-items: center; padding: 0; }
@@ -384,7 +392,12 @@
       .hero-form input { padding: 4px 8px; }
       .hero-form button { border-radius: 10px; padding: 13px; }
       footer { flex-direction: column; align-items: flex-start; }
-      .fc-pos-1, .fc-pos-2, .fc-pos-3 { display: none; }
+      .fc-pos-1 { display: block; top: 26px; right: -6px; }
+      .fc-pos-2 { display: block; bottom: 120px; left: -6px; }
+      .fc-pos-3 { display: block; top: 47%; right: -6px; }
+      .float-card { padding: 9px 12px; }
+      .fc-label { font-size: 0.56rem; }
+      .fc-value { font-size: 0.76rem; gap: 5px; }
     }
 
     /* ════ FRUIT COLOR SPLASH ════ */
@@ -425,9 +438,12 @@
     .feature-card.fc-berry  { --fc: var(--berry); }
     .feature-card.fc-lime   { --fc: var(--lime); }
     .feature-card.fc-grape  { --fc: var(--grape); }
+    .feature-card.fc-tomato { --fc: var(--tomato); }
+    .feature-card.fc-avocado{ --fc: var(--avocado); }
+    .feature-icon-wrap svg { width: 24px; height: 24px; }
     .feature-card::before { background: radial-gradient(circle at var(--mx,50%) var(--my,50%), color-mix(in srgb, var(--fc) 15%, transparent), transparent 60%); }
     .feature-card:hover { border-color: color-mix(in srgb, var(--fc) 42%, transparent); box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px color-mix(in srgb, var(--fc) 18%, transparent), 0 0 44px color-mix(in srgb, var(--fc) 13%, transparent); }
-    .feature-icon-wrap { background: color-mix(in srgb, var(--fc) 13%, transparent); border-color: color-mix(in srgb, var(--fc) 26%, transparent); }
+    .feature-icon-wrap { background: color-mix(in srgb, var(--fc) 13%, transparent); border-color: color-mix(in srgb, var(--fc) 26%, transparent); color: var(--fc); }
     .feature-card:hover .feature-icon-wrap { background: color-mix(in srgb, var(--fc) 22%, transparent); box-shadow: 0 0 24px color-mix(in srgb, var(--fc) 32%, transparent); }
 
     /* testimonial avatars per fruit */
@@ -650,8 +666,8 @@
             <div class="phone-gradient-overlay"></div>
             <div class="phone-ui">
               <span class="phone-ui-badge">AI Generated</span>
-              <div class="phone-ui-title">Lemon Herb Roasted Chicken</div>
-              <div class="phone-ui-meta">From 6 fridge items · Ready in 35 min</div>
+              <div class="phone-ui-title">Baked Salmon Poke Bowl</div>
+              <div class="phone-ui-meta">From 8 fridge items · Ready in 20 min</div>
               <div class="phone-ui-bar">
                 <div class="phone-ui-step done"></div>
                 <div class="phone-ui-step done"></div>
@@ -728,19 +744,19 @@
     <div class="steps">
       <div class="step" data-reveal="up" data-delay="1">
         <div class="step-num">1</div>
-        <div class="step-icon">📸</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div>
         <div class="step-title">Snap Your Fridge</div>
         <p class="step-desc">Open the app and take a photo of your fridge or pantry. No typing, no scrolling — just a quick snap.</p>
       </div>
       <div class="step" data-reveal="up" data-delay="2">
         <div class="step-num">2</div>
-        <div class="step-icon">🤖</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg></div>
         <div class="step-title">AI Detects Ingredients</div>
         <p class="step-desc">Our vision AI instantly identifies every ingredient and maps out what delicious combinations are possible.</p>
       </div>
       <div class="step" data-reveal="up" data-delay="3">
         <div class="step-num">3</div>
-        <div class="step-icon">🍽️</div>
+        <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></div>
         <div class="step-title">Get Your Recipe Instantly</div>
         <p class="step-desc">Receive a personalized recipe with your AI sous-chef guiding you through every single step.</p>
       </div>
@@ -764,22 +780,22 @@
         <p class="section-sub" data-reveal="up" data-delay="2">Plate AI is more than a recipe app — it's your personal kitchen intelligence system.</p>
       </div>
       <div class="feature-card fc-citrus" data-reveal="up" data-delay="1">
-        <div class="feature-icon-wrap">📷</div>
+        <div class="feature-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></div>
         <div class="feature-title">AI Fridge Scanner</div>
         <p class="feature-desc">Snap any ingredients — a full fridge, a few leftover veggies, a bare pantry — and get a tailored recipe instantly. No grocery list required.</p>
       </div>
       <div class="feature-card fc-berry" data-reveal="up" data-delay="2">
-        <div class="feature-icon-wrap">💬</div>
+        <div class="feature-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
         <div class="feature-title">Live AI Coaching</div>
         <p class="feature-desc">Ask your sous-chef anything while you cook. "How do I know when the onions are caramelized?" Real-time answers, tips, and substitutions on demand.</p>
       </div>
       <div class="feature-card fc-lime" data-reveal="up" data-delay="3">
-        <div class="feature-icon-wrap">📅</div>
+        <div class="feature-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 2v4"/><path d="M16 2v4"/></svg></div>
         <div class="feature-title">Meal Planner</div>
         <p class="feature-desc">Organize your entire week in seconds. Plate AI plans balanced, varied meals around what you already have — saving time and cutting waste.</p>
       </div>
       <div class="feature-card fc-grape" data-reveal="up" data-delay="4">
-        <div class="feature-icon-wrap">📖</div>
+        <div class="feature-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
         <div class="feature-title">Smart Cookbook</div>
         <p class="feature-desc">Every recipe you make is saved, rated, and improvable. Ask AI to remix a dish, make it healthier, or adapt it for dietary needs.</p>
       </div>
@@ -788,37 +804,21 @@
 
   <div class="section-divider"></div>
 
-  <!-- ── TESTIMONIALS ───────────────────────────────── -->
-  <section class="testimonials" id="testimonials">
-    <div class="blob" style="width:340px;height:340px;background:rgba(120,80,255,0.1);bottom:-60px;left:8%;" data-speed="-0.16"></div>
-    <span class="section-label" data-reveal="up">Early Users</span>
-    <h2 class="section-title kinetic" data-split data-reveal-trigger>Real cooks, real results</h2>
-    <p class="section-sub" data-reveal="up" data-delay="2">We shared early access with a small group of food lovers. Here's what they had to say.</p>
-
-    <div class="testi-grid">
-      <div class="testi-card" data-reveal="up" data-delay="1">
-        <div class="stars">★★★★★</div>
-        <p class="testi-quote">I used to order takeout every other night because I had no idea what to make. Last week I made a gourmet pasta from leftovers that impressed my whole family.</p>
-        <div class="testi-author">
-          <div class="avatar">SM</div>
-          <div><div class="testi-name">Sarah Mitchell</div><div class="testi-role">Home cook · Chicago, IL</div></div>
-        </div>
+  <!-- ── EXTRA FEATURES (plan / shop / prep) ────────── -->
+  <section class="extra-features" id="more">
+    <span class="section-label" data-reveal="up">Beyond Recipes</span>
+    <h2 class="section-title kinetic" data-split data-reveal-trigger>Plan, shop, and prep — effortlessly</h2>
+    <p class="section-sub" data-reveal="up" data-delay="2">Plate AI handles your whole week, not just one meal — from what to buy to cooking it all ahead.</p>
+    <div class="extra-grid">
+      <div class="feature-card" data-reveal="up" data-delay="1">
+        <div class="feature-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>
+        <div class="feature-title">Smart Grocery List</div>
+        <p class="feature-desc">Plate AI builds your shopping list automatically — just the ingredients you're missing for the recipes you want to make. Never forget an item or buy doubles again.</p>
       </div>
-      <div class="testi-card" data-reveal="up" data-delay="2">
-        <div class="stars">★★★★★</div>
-        <p class="testi-quote">The live coaching feature is insane. I was nervous about making risotto for the first time and my AI sous-chef walked me through every stir. Better than the restaurant version.</p>
-        <div class="testi-author">
-          <div class="avatar av2">JT</div>
-          <div><div class="testi-name">James Torres</div><div class="testi-role">Fitness enthusiast · Austin, TX</div></div>
-        </div>
-      </div>
-      <div class="testi-card" data-reveal="up" data-delay="3">
-        <div class="stars">★★★★★</div>
-        <p class="testi-quote">The Meal Planner builds my entire week around what's in my fridge. I've cut my grocery spend by almost a third since I started using it.</p>
-        <div class="testi-author">
-          <div class="avatar av3">ML</div>
-          <div><div class="testi-name">Maria Lowe</div><div class="testi-role">Busy parent · Seattle, WA</div></div>
-        </div>
+      <div class="feature-card" data-reveal="up" data-delay="2">
+        <div class="feature-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/></svg></div>
+        <div class="feature-title">Weekly Meal Prep</div>
+        <p class="feature-desc">Cook your whole week in one session. Plate AI scales and sequences your recipes so you batch-prep efficiently, then portions everything into grab-and-go meals for the days ahead.</p>
       </div>
     </div>
   </section>
@@ -854,8 +854,8 @@
         <div class="plan-badge">Coming Soon</div>
         <div class="plan-name">Pro</div>
         <div class="plan-price">
-          <div><span class="plan-price-main">$6.99</span><span class="plan-price-period">/ mo</span></div>
-          <div class="plan-price-alt">or <strong>$49/yr</strong> — save 42%</div>
+          <div><span class="plan-price-main">$4.99</span><span class="plan-price-period">/ mo</span></div>
+          <div class="plan-price-alt">or <strong>$39/yr</strong> — save 35%</div>
         </div>
         <div class="plan-divider"></div>
         <ul class="plan-features">
