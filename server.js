@@ -15,7 +15,7 @@ const pool = new Pool({
 // ── Email (Resend) ────────────────────────────────────
 const { Resend } = require('resend');
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const FROM_EMAIL = process.env.FROM_EMAIL || 'Plate AI <hello@theplateai.com>';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'Plate AI <contact@theplateai.com>';
 
 // Sends the welcome email. Fire-and-forget: a failure here never breaks signup.
 function sendWelcomeEmail(email) {
@@ -23,18 +23,17 @@ function sendWelcomeEmail(email) {
   resend.emails.send({
     from: FROM_EMAIL,
     to: email,
-    subject: "You're on the list! 🍽️",
+    subject: "Welcome to the Plate AI waitlist",
+    replyTo: "contact@theplateai.com",
+    text: "Hi,\n\nThanks for joining the Plate AI waitlist — you're confirmed. We'll email you as soon as we launch, and as an early supporter you've locked in a 30% launch discount.\n\nTalk soon,\nThe Plate AI team\ntheplateai.com",
     html: `
-      <div style="font-family: Arial, Helvetica, sans-serif; max-width: 480px; margin: 0 auto; padding: 36px 28px; color: #1A1A1A; line-height: 1.6;">
-        <h1 style="font-size: 26px; margin: 0 0 16px; letter-spacing: -0.5px;">You're on the list! 🍽️</h1>
-        <p style="font-size: 15px; color: #444; margin: 0 0 16px;">
-          Thanks for joining the <strong>Plate&nbsp;AI</strong> waitlist. We'll email you the moment we launch —
-          you'll be among the very first to turn any fridge into a 5-star meal.
-        </p>
-        <p style="font-size: 15px; color: #444; margin: 0 0 24px;">
-          As an early supporter, you've locked in <strong style="color:#E07A5F;">30% off Pro</strong> at launch. 🎉
-        </p>
-        <p style="font-size: 14px; color: #888; margin: 0;">— The Plate AI team</p>
+      <div style="font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #1a1a1a; line-height: 1.6; font-size: 15px;">
+        <p style="margin: 0 0 16px;">Hi,</p>
+        <p style="margin: 0 0 16px;">Thanks for joining the <strong>Plate AI</strong> waitlist — you're confirmed. We'll email you as soon as we launch.</p>
+        <p style="margin: 0 0 16px;">As an early supporter, you've locked in a <strong>30% launch discount</strong>.</p>
+        <p style="margin: 0 0 4px;">Talk soon,</p>
+        <p style="margin: 0; color: #555;">The Plate AI team</p>
+        <p style="margin: 18px 0 0; font-size: 13px; color: #999;">theplateai.com</p>
       </div>
     `
   })
